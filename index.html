@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="default">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,56 +12,154 @@
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<div class="aurora" aria-hidden="true"><span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span></div>
 
-<nav class="nav">
+<!-- Liquid-glass refraction filter (used once, on the hero window rim) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <filter id="lg-refract" x="-20%" y="-20%" width="140%" height="140%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.009 0.013" numOctaves="2" seed="7" result="noise">
+      <animate attributeName="baseFrequency" dur="16s" values="0.009 0.013;0.013 0.009;0.009 0.013" repeatCount="indefinite"/>
+    </feTurbulence>
+    <feDisplacementMap in="SourceGraphic" in2="noise" scale="16" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+</svg>
+
+<div class="bg" aria-hidden="true">
+  <span class="blob b1"></span><span class="blob b2"></span>
+  <span class="blob b3"></span><span class="blob b4"></span>
+  <span class="bg-noise"></span>
+  <span class="bg-grid"></span>
+</div>
+
+<nav class="nav glass" id="top">
   <a class="brand" href="#top">
     <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="13" class="ring"/><circle cx="16" cy="16" r="5.5" class="core"/><circle cx="16" cy="3.5" r="2" class="orbit o1"/><circle cx="28" cy="19" r="2" class="orbit o2"/></svg>
     <span>Pixzference</span>
   </a>
   <div class="nav-links">
+    <a href="#screenshots">Preview</a>
     <a href="#features">Features</a>
     <a href="#themes">Themes</a>
     <a href="#motion">Motion</a>
     <a href="#security">Security</a>
     <a href="#deploy">Deploy</a>
   </div>
-  <a class="btn btn-primary btn-sm" href="https://github.com/pixzdev/pixzference" target="_blank" rel="noopener">
+  <a class="btn btn-sm btn-github" href="https://github.com/pixzdev/pixzference" target="_blank" rel="noopener">
     <svg viewBox="0 0 16 16" width="15" height="15" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
     GitHub
   </a>
 </nav>
 
-<header class="hero" id="top">
-  <div class="pill reveal">Open source &middot; MIT &middot; fork of OmniRoute</div>
+<header class="hero">
+  <div class="pill reveal">Open source · MIT · fork of OmniRoute</div>
   <h1 class="hero-title reveal d1">One endpoint for<br><span class="gradient-text">every AI provider</span></h1>
   <p class="hero-sub reveal d2">A themeable, motion-rich, security-hardened AI gateway for multi-provider LLMs.
   375+ providers, an OpenAI-compatible API, and a design system of its own.</p>
   <div class="hero-cta reveal d3">
-    <a class="btn btn-primary" href="https://github.com/pixzdev/pixzference" target="_blank" rel="noopener">Star on GitHub</a>
-    <a class="btn btn-ghost" href="#features">Explore features</a>
+    <a class="btn btn-primary" href="https://github.com/pixzdev/pixzference" target="_blank" rel="noopener">
+      Star on GitHub
+      <svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.75.75 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25z"/></svg>
+    </a>
+    <a class="btn btn-glass" href="#screenshots">See the UI</a>
   </div>
-  <div class="stats reveal d4">
-    <div class="stat"><span class="stat-num" data-count="9">0</span><span class="stat-label">live themes</span></div>
-    <div class="stat"><span class="stat-num" data-count="18">0</span><span class="stat-label">motion animations</span></div>
-    <div class="stat"><span class="stat-num" data-count="375" data-suffix="+">0</span><span class="stat-label">providers</span></div>
-    <div class="stat"><span class="stat-num" data-count="100" data-suffix="%">0</span><span class="stat-label">responsive</span></div>
+
+  <div class="hero-preview reveal d4" id="heroPreview">
+    <div class="liquid-rim" aria-hidden="true"></div>
+    <div class="window glass-heavy">
+      <div class="win-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><em>pixzference — dashboard</em></div>
+      <div class="win-body">
+        <aside class="win-side">
+          <span class="side-logo"></span>
+          <span class="side-item on"></span><span class="side-item"></span>
+          <span class="side-item"></span><span class="side-item"></span>
+          <span class="side-item"></span>
+        </aside>
+        <div class="win-main">
+          <div class="win-head"><span class="win-title"></span><span class="win-btn"></span></div>
+          <div class="win-cards">
+            <div class="wc"><b>Requests</b><i>1.2M</i><u></u></div>
+            <div class="wc"><b>Providers</b><i>375+</i><u></u></div>
+            <div class="wc"><b>Uptime</b><i>99.98%</i><u></u></div>
+          </div>
+          <div class="win-rows">
+            <div class="wr"><span class="wr-ava" style="--a:#f97316"></span><span class="wr-name">Claude</span><span class="wr-pill ok">connected</span></div>
+            <div class="wr"><span class="wr-ava" style="--a:#10b981"></span><span class="wr-name">GPT · OpenAI</span><span class="wr-pill ok">connected</span></div>
+            <div class="wr"><span class="wr-ava" style="--a:#3b82f6"></span><span class="wr-name">Gemini</span><span class="wr-pill ok">connected</span></div>
+            <div class="wr"><span class="wr-ava" style="--a:#8b5cf6"></span><span class="wr-name">Groq</span><span class="wr-pill idle">standby</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="stats reveal d5">
+    <div class="stat glass-lite"><span class="stat-num" data-count="9">0</span><span class="stat-label">live themes</span></div>
+    <div class="stat glass-lite"><span class="stat-num" data-count="18">0</span><span class="stat-label">motion animations</span></div>
+    <div class="stat glass-lite"><span class="stat-num" data-count="375" data-suffix="+">0</span><span class="stat-label">providers</span></div>
+    <div class="stat glass-lite"><span class="stat-num" data-count="100" data-suffix="%">0</span><span class="stat-label">responsive</span></div>
   </div>
 </header>
 
 <section class="section" id="screenshots">
   <div class="section-head reveal">
-    <span class="kicker">Screenshots</span>
-    <h2>The dashboard, in every theme</h2>
-    <p>Every surface of Pixzference is themed live — no reload, no flash. Here is the real UI.</p>
+    <span class="kicker">UI preview</span>
+    <h2>The dashboard, up close</h2>
+    <p>Live previews of the real interface — rendered right here in CSS. Every surface re-themes instantly, no reload.</p>
   </div>
   <div class="shot-grid">
-    <figure class="shot reveal"><img src="public/screenshots/login.png" alt="Pixzference login screen with aurora backdrop" loading="lazy"><figcaption>Login — aurora backdrop &amp; shine button</figcaption></figure>
-    <figure class="shot reveal d1"><img src="public/screenshots/dashboard.png" alt="Pixzference dashboard home" loading="lazy"><figcaption>Dashboard home — staggered card reveals</figcaption></figure>
-    <figure class="shot reveal"><img src="public/screenshots/appearance.png" alt="Appearance settings with theme picker" loading="lazy"><figcaption>Settings → Appearance — 9 themes, 3 densities, 3 corner styles</figcaption></figure>
-    <figure class="shot reveal d1"><img src="public/screenshots/dashboard-neon.png" alt="Dashboard in Neon theme" loading="lazy"><figcaption>Neon theme — one of nine</figcaption></figure>
-    <figure class="shot reveal"><img src="public/screenshots/providers.png" alt="Provider connections page" loading="lazy"><figcaption>Providers — 375+ integrations</figcaption></figure>
-    <figure class="shot reveal d1"><img src="public/screenshots/mobile.png" alt="Mobile layout" loading="lazy"><figcaption>Phone layout — fluid type &amp; 40px touch targets</figcaption></figure>
+    <figure class="shot glass-lite reveal">
+      <div class="mini" style="--accent:#22d3ee">
+        <div class="mini-bar"><span></span><em>appearance</em></div>
+        <div class="sw-grid">
+          <i style="--c:#a3e635" class="on"></i><i style="--c:#fb923c"></i><i style="--c:#818cf8"></i>
+          <i style="--c:#22d3ee" class="on"></i><i style="--c:#4ade80"></i><i style="--c:#fb7185"></i>
+          <i style="--c:#38bdf8"></i><i style="--c:#f472b6"></i><i style="--c:#e5e7eb"></i>
+        </div>
+        <div class="seg"><b>Density</b><span class="on">Compact</span><span>Cozy</span><span>Spacious</span></div>
+        <div class="seg"><b>Corners</b><span>Sharp</span><span class="on">Soft</span><span>Round</span></div>
+        <div class="switch-row"><b>Motion</b><span class="ios-switch on"><i></i></span></div>
+      </div>
+      <figcaption>Settings → Appearance — 9 themes, densities, corners, motion switch</figcaption>
+    </figure>
+    <figure class="shot glass-lite reveal d1">
+      <div class="mini" style="--accent:#a3e635">
+        <div class="mini-bar"><span></span><em>providers</em></div>
+        <div class="prov-grid">
+          <div class="pg"><i style="--c:#f97316"></i>Claude</div>
+          <div class="pg"><i style="--c:#10b981"></i>OpenAI</div>
+          <div class="pg"><i style="--c:#3b82f6"></i>Gemini</div>
+          <div class="pg"><i style="--c:#8b5cf6"></i>Groq</div>
+          <div class="pg"><i style="--c:#f43f5e"></i>Mistral</div>
+          <div class="pg"><i style="--c:#eab308"></i>DeepSeek</div>
+          <div class="pg"><i style="--c:#06b6d4"></i>Kimi</div>
+          <div class="pg more">+368</div>
+        </div>
+      </div>
+      <figcaption>Providers — 375+ integrations, one endpoint</figcaption>
+    </figure>
+    <figure class="shot glass-lite reveal">
+      <div class="mini dark" style="--accent:#4ade80">
+        <div class="mini-bar"><span></span><em>terminal</em></div>
+        <pre class="mini-term">$ pixz models | grep opus
+  pc/claude-opus-5.5        ready   1.0s
+  pc/kimi-3.1-pro           ready   0.9s
+  pc/gemini-4-argon         ready   1.1s
+$ pixz chat -m pc/claude-opus-5.5
+  › streaming… done in 2.4s</pre>
+      </div>
+      <figcaption>Matrix theme — dark-native, terminal friendly</figcaption>
+    </figure>
+    <figure class="shot glass-lite reveal d1">
+      <div class="phone-frame">
+        <div class="phone-notch"></div>
+        <div class="mini phone" style="--accent:#f472b6">
+          <div class="mini-bar"><span></span><em>dashboard</em></div>
+          <div class="p-cards"><div class="pc1"><b>1.2M</b><i>requests</i></div><div class="pc1"><b>375+</b><i>providers</i></div></div>
+          <div class="wr"><span class="wr-ava" style="--a:#f97316"></span><span class="wr-name">Claude</span><span class="wr-pill ok">live</span></div>
+          <div class="wr"><span class="wr-ava" style="--a:#10b981"></span><span class="wr-name">OpenAI</span><span class="wr-pill ok">live</span></div>
+        </div>
+      </div>
+      <figcaption>Phone layout — fluid type, 40px touch targets</figcaption>
+    </figure>
   </div>
 </section>
 
@@ -72,43 +170,45 @@
     <p>Pixzference keeps everything OmniRoute is famous for — and adds a layer of its own.</p>
   </div>
   <div class="bento">
-    <article class="card card-lg reveal">
-      <div class="card-icon">🎨</div>
-      <h3>9 live themes</h3>
-      <p>OmniRoute Lime, Ember, Aurora, Neon, Matrix, Rosewood, Ocean, Candy and Mono Ink — switchable live from Settings → Appearance. Themes are pure CSS token re-points, so every Tailwind utility keeps working. Add your own in ten lines.</p>
-      <div class="swatch-row" aria-hidden="true">
-        <span class="swatch" style="--c:#a3e635" title="Lime"></span>
-        <span class="swatch" style="--c:#fb923c" title="Ember"></span>
-        <span class="swatch" style="--c:#818cf8" title="Aurora"></span>
-        <span class="swatch" style="--c:#22d3ee" title="Neon"></span>
-        <span class="swatch" style="--c:#4ade80" title="Matrix"></span>
-        <span class="swatch" style="--c:#fb7185" title="Rosewood"></span>
-        <span class="swatch" style="--c:#38bdf8" title="Ocean"></span>
-        <span class="swatch" style="--c:#f472b6" title="Candy"></span>
-        <span class="swatch" style="--c:#e5e7eb" title="Mono Ink"></span>
+    <article class="card card-lg glass-lite reveal">
+      <div>
+        <div class="card-icon">🎨</div>
+        <h3>9 live themes</h3>
+        <p>OmniRoute Lime, Ember, Aurora, Neon, Matrix, Rosewood, Ocean, Candy and Mono Ink — switchable live from Settings → Appearance. Themes are pure CSS token re-points, so every Tailwind utility keeps working. Add your own in ten lines.</p>
+      </div>
+      <div class="swatch-ring" aria-hidden="true">
+        <span class="swatch" style="--c:#a3e635"></span>
+        <span class="swatch" style="--c:#fb923c"></span>
+        <span class="swatch" style="--c:#818cf8"></span>
+        <span class="swatch" style="--c:#22d3ee"></span>
+        <span class="swatch" style="--c:#4ade80"></span>
+        <span class="swatch" style="--c:#fb7185"></span>
+        <span class="swatch" style="--c:#38bdf8"></span>
+        <span class="swatch" style="--c:#f472b6"></span>
+        <span class="swatch" style="--c:#e5e7eb"></span>
       </div>
     </article>
-    <article class="card reveal d1">
+    <article class="card glass-lite reveal d1">
       <div class="card-icon">📐</div>
       <h3>3 densities × 3 corners</h3>
-      <p>Compact for small laptops, Cozy by default, Spacious for 4K displays — plus Sharp, Soft and Round corner styles.</p>
+      <p>Compact for small laptops, Cozy by default, Spacious for 4K — plus Sharp, Soft and Round corner styles.</p>
     </article>
-    <article class="card reveal d2">
+    <article class="card glass-lite reveal d2">
       <div class="card-icon">⚡</div>
       <h3>Motion engine</h3>
       <p>18 named animations: page transitions, staggered reveals, shine sweeps, glass panels, gradient text, aurora backdrops — with a manual off-switch and <code>prefers-reduced-motion</code> respect.</p>
     </article>
-    <article class="card reveal">
+    <article class="card glass-lite reveal">
       <div class="card-icon">📱</div>
       <h3>Any viewport</h3>
       <p>Phones, tablets, laptops, ultrawides. Fluid typography via <code>clamp()</code>, touch targets never below 40px, installable PWA.</p>
     </article>
-    <article class="card reveal d1">
+    <article class="card glass-lite reveal d1">
       <div class="card-icon">☁️</div>
       <h3>Serverless persistence</h3>
       <p>Versioned, gzip-compressed snapshot sync to Neon Postgres. Cold starts rehydrate in seconds; tracked writes flush on a debounce.</p>
     </article>
-    <article class="card reveal d2">
+    <article class="card glass-lite reveal d2">
       <div class="card-icon">🔌</div>
       <h3>Everything OmniRoute</h3>
       <p>375+ providers, RTK + Caveman compression, auto fallback, MCP/A2A, OpenAI-compatible API, CLI tools — fully compatible, untouched.</p>
@@ -123,15 +223,15 @@
     <p>Hover a card to feel each theme's accent. In the app, switching is instant and persists per-browser.</p>
   </div>
   <div class="theme-grid">
-    <div class="theme-card reveal" style="--accent:#a3e635;--glow:163,230,53"><h4>OmniRoute Lime</h4><p>The heritage default — electric lime on charcoal.</p></div>
-    <div class="theme-card reveal d1" style="--accent:#fb923c;--glow:251,146,60"><h4>Ember</h4><p>Warm sunset oranges for long sessions.</p></div>
-    <div class="theme-card reveal d2" style="--accent:#818cf8;--glow:129,140,248"><h4>Aurora</h4><p>Violet-to-cyan northern lights.</p></div>
-    <div class="theme-card reveal" style="--accent:#22d3ee;--glow:34,211,238"><h4>Neon</h4><p>Cyberpunk cyan that glows in the dark.</p></div>
-    <div class="theme-card reveal d1" style="--accent:#4ade80;--glow:74,222,128"><h4>Matrix</h4><p>Phosphor green for terminal dwellers.</p></div>
-    <div class="theme-card reveal d2" style="--accent:#fb7185;--glow:251,113,133"><h4>Rosewood</h4><p>Romantic rose, soft and calm.</p></div>
-    <div class="theme-card reveal" style="--accent:#38bdf8;--glow:56,189,248"><h4>Ocean</h4><p>Deep-sea blues with a fresh breeze.</p></div>
-    <div class="theme-card reveal d1" style="--accent:#f472b6;--glow:244,114,182"><h4>Candy</h4><p>Playful pink, sweet and bright.</p></div>
-    <div class="theme-card reveal d2" style="--accent:#e5e7eb;--glow:229,231,235"><h4>Mono Ink</h4><p>Black, white, and nothing in between.</p></div>
+    <div class="theme-card glass-lite reveal" style="--accent:#a3e635;--glow:163,230,53"><h4>OmniRoute Lime</h4><p>The heritage default — electric lime on charcoal.</p></div>
+    <div class="theme-card glass-lite reveal d1" style="--accent:#fb923c;--glow:251,146,60"><h4>Ember</h4><p>Warm sunset oranges for long sessions.</p></div>
+    <div class="theme-card glass-lite reveal d2" style="--accent:#818cf8;--glow:129,140,248"><h4>Aurora</h4><p>Violet-to-cyan northern lights.</p></div>
+    <div class="theme-card glass-lite reveal" style="--accent:#22d3ee;--glow:34,211,238"><h4>Neon</h4><p>Cyberpunk cyan that glows in the dark.</p></div>
+    <div class="theme-card glass-lite reveal d1" style="--accent:#4ade80;--glow:74,222,128"><h4>Matrix</h4><p>Phosphor green for terminal dwellers.</p></div>
+    <div class="theme-card glass-lite reveal d2" style="--accent:#fb7185;--glow:251,113,133"><h4>Rosewood</h4><p>Romantic rose, soft and calm.</p></div>
+    <div class="theme-card glass-lite reveal" style="--accent:#38bdf8;--glow:56,189,248"><h4>Ocean</h4><p>Deep-sea blues with a fresh breeze.</p></div>
+    <div class="theme-card glass-lite reveal d1" style="--accent:#f472b6;--glow:244,114,182"><h4>Candy</h4><p>Playful pink, sweet and bright.</p></div>
+    <div class="theme-card glass-lite reveal d2" style="--accent:#e5e7eb;--glow:229,231,235"><h4>Mono Ink</h4><p>Black, white, and nothing in between.</p></div>
   </div>
 </section>
 
@@ -139,18 +239,18 @@
   <div class="section-head reveal">
     <span class="kicker">Motion</span>
     <h2>Animation that respects you</h2>
-    <p>Motion is a language — Pixzference speaks it fluently, and knows when to stay quiet.</p>
+    <p>Motion is a language — Pixzference speaks it fluently, and knows when to stay quiet. Tap a chip to replay.</p>
   </div>
   <div class="motion-demo">
     <div class="motion-row reveal">
-      <div class="motion-chip" data-anim="fade">fade-in</div>
-      <div class="motion-chip" data-anim="slide">slide-up</div>
-      <div class="motion-chip" data-anim="pop">pop-in</div>
-      <div class="motion-chip" data-anim="shine">shine-sweep</div>
-      <div class="motion-chip" data-anim="glass">glass-panel</div>
-      <div class="motion-chip" data-anim="gradient">gradient-text</div>
+      <div class="motion-chip glass-lite" data-anim="fade">fade-in</div>
+      <div class="motion-chip glass-lite" data-anim="slide">slide-up</div>
+      <div class="motion-chip glass-lite" data-anim="pop">pop-in</div>
+      <div class="motion-chip glass-lite" data-anim="shine">shine-sweep</div>
+      <div class="motion-chip glass-lite" data-anim="glass">glass-panel</div>
+      <div class="motion-chip glass-lite" data-anim="gradient">gradient-text</div>
     </div>
-    <div class="motion-note reveal d1">
+    <div class="motion-note glass-lite reveal d1">
       <p>Every animation ships twice: once for delight, once for accessibility. The engine honors
       <code>prefers-reduced-motion</code> at the CSS level (WCAG 2.3.3) <em>and</em> exposes a manual
       Motion on/off switch in Settings — because vestibular safety should never require OS-level settings.</p>
@@ -165,12 +265,12 @@
     <p>The full OmniRoute security surface, plus defaults that refuse to be lazy.</p>
   </div>
   <div class="sec-grid">
-    <div class="sec-item reveal"><span class="sec-check">✓</span><div><h4>Strong session signing</h4><p>JWT sessions signed with an auto-generated 64-char secret — never a placeholder, never a tutorial default.</p></div></div>
-    <div class="sec-item reveal d1"><span class="sec-check">✓</span><div><h4>Login rate-limiting</h4><p>Brute-force lockout with attempt tracking, CSRF protection and secure cookies.</p></div></div>
-    <div class="sec-item reveal d2"><span class="sec-check">✓</span><div><h4>Env-bootstrapped password</h4><p>Set your dashboard password via <code>INITIAL_PASSWORD</code>, change it in-app, forget "123456" forever.</p></div></div>
-    <div class="sec-item reveal"><span class="sec-check">✓</span><div><h4>Scoped API keys</h4><p>Per-key scopes, request logging and a full audit trail — every credential encrypted at rest.</p></div></div>
-    <div class="sec-item reveal d1"><span class="sec-check">✓</span><div><h4>Fail-safe persistence</h4><p>If Neon is unreachable, the gateway keeps serving — sync retries quietly on the next write.</p></div></div>
-    <div class="sec-item reveal d2"><span class="sec-check">✓</span><div><h4>Documented hardening</h4><p>A SECURITY.md written from real-world audits of misconfigured gateway deployments.</p></div></div>
+    <div class="sec-item glass-lite reveal"><span class="sec-check">✓</span><div><h4>Strong session signing</h4><p>JWT sessions signed with an auto-generated 64-char secret — never a placeholder, never a tutorial default.</p></div></div>
+    <div class="sec-item glass-lite reveal d1"><span class="sec-check">✓</span><div><h4>Login rate-limiting</h4><p>Brute-force lockout with attempt tracking, CSRF protection and secure cookies.</p></div></div>
+    <div class="sec-item glass-lite reveal d2"><span class="sec-check">✓</span><div><h4>Env-bootstrapped password</h4><p>Set your dashboard password via <code>INITIAL_PASSWORD</code>, change it in-app, forget "123456" forever.</p></div></div>
+    <div class="sec-item glass-lite reveal"><span class="sec-check">✓</span><div><h4>Scoped API keys</h4><p>Per-key scopes, request logging and a full audit trail — every credential encrypted at rest.</p></div></div>
+    <div class="sec-item glass-lite reveal d1"><span class="sec-check">✓</span><div><h4>Fail-safe persistence</h4><p>If Neon is unreachable, the gateway keeps serving — sync retries quietly on the next write.</p></div></div>
+    <div class="sec-item glass-lite reveal d2"><span class="sec-check">✓</span><div><h4>Documented hardening</h4><p>A SECURITY.md written from real-world audits of misconfigured gateway deployments.</p></div></div>
   </div>
 </section>
 
@@ -181,7 +281,7 @@
     <p>Vercel + Neon Postgres for serverless, Docker for everything else.</p>
   </div>
   <div class="deploy-grid">
-    <div class="terminal reveal">
+    <div class="terminal glass reveal">
       <div class="term-bar"><span></span><span></span><span></span><em>vercel + neon</em></div>
       <pre><code><span class="c"># One-click from GitHub</span>
 <span class="p">$</span> git clone https://github.com/pixzdev/pixzference
@@ -204,7 +304,8 @@
 </section>
 
 <section class="cta-section">
-  <div class="cta-card reveal">
+  <div class="cta-card glass reveal">
+    <div class="sweep" aria-hidden="true"></div>
     <h2>Give your AI stack a face</h2>
     <p>Star the repo, deploy your own, and make it yours — ten lines of CSS is all a theme takes.</p>
     <div class="hero-cta">
